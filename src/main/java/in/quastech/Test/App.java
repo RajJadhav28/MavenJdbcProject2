@@ -23,7 +23,7 @@ public class App
         JdbcTemplate jdbcTemplate=context.getBean(JdbcTemplate.class);
         
         Scanner sc=new Scanner(System.in);
-        int x;String sql;int count;
+        int x;String sql;int count;int flag=0;
         try {
         do {
         	System.out.println("Enter your choice");
@@ -58,6 +58,9 @@ public class App
         case 2:{
         	 sql="select * from emp";
         	 List<Employees>list=jdbcTemplate.query(sql, new EmployeeRowMapper());
+        	 if(list.isEmpty()) {
+        		 System.out.println("No data in the list");
+        	 }else {
         	 for(Employees li:list) {
         		 System.out.println("Employee Id:"+li.getEmpid());
         		 System.out.println("Employee Name:"+li.getEmpname());
@@ -65,7 +68,10 @@ public class App
         		 System.out.println("Department:"+li.getDepartment());
         		 System.out.println("Location:"+li.getLocation());
         		 System.out.println("-----------------------------");
+        		 
         	 }
+        	 }
+        	
         }
         	 break;
         	 
@@ -106,6 +112,9 @@ public class App
         	String location=sc.next();
         	sql="select * from emp where location=?";
         	List<Employees>list=jdbcTemplate.query(sql,new EmployeeRowMapper(),location);
+        	if(list.isEmpty()) {
+        		System.out.println("No data found at location:"+location);
+        	}else {
         	for(Employees li:list) {
         		System.out.println("Employee Id:"+li.getEmpid());
         		System.out.println("Employee Name:"+li.getEmpname());
@@ -113,8 +122,9 @@ public class App
         		System.out.println("Department:"+li.getDepartment());
         		System.out.println("Location:"+li.getLocation());
         		System.out.println("----------------------------");
+        			
         	}
-        	
+        	}
         }
         break;
         default:System.out.println("Enter a valid number!!!");
